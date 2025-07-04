@@ -11,9 +11,7 @@ export function Caterories() {
             data={categories}
             keyExtractor={(item) => item.id}
             renderItem={({ item }) =>
-                <Category
-                    name={item.name}
-                    icon={item.icon}
+                <Category name={item.name} icon={item.icon}
                     isSelected={false} />}
                     horizontal
                     style={styles.container}
