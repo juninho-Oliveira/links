@@ -40,7 +40,7 @@ export default function Index() {
             />
 
 
-            <Modal transparent visible>
+            <Modal transparent visible={false}>
                 <View style={styles.modal}>
                     <View style={styles.modalContent}>
                         <View style={styles.modalHeader}>
