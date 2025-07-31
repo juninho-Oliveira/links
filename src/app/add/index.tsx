@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, } from "react";
 import { View, Text, TouchableOpacity, Alert } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 
@@ -10,25 +10,48 @@ import { Caterories } from "@/components/categories";
 import { Input } from "@/components/input";
 import { Button } from "@/components/button";
 
+import { LinksStorage } from "@/storage/link-storage";
+
 export default function Add() {
     const [category, setCategoty] = useState("")
     const [name, setName] = useState("")
     const [url, setUrl] = useState("")
 
-    function handleAdd() {
-        if (!category) {
-            return Alert.alert("Categoria", "Selecione a categoria")
-        }
+    async function handleAdd() {
+        try {
+            if (!category) {
+                return Alert.alert("Categoria", "Selecione a categoria")
+            }
 
-        if (!name.trim()) {
-            return Alert.alert("Nome", "Informe um nome")
-        }
+            if (!name.trim()) {
+                return Alert.alert("Nome", "Informe um nome")
+            }
 
-        if (!url.trim()) {
-            return Alert.alert("URL", "Informe a url")
-        }
+            if (!url.trim()) {
+                return Alert.alert("URL", "Informe a url")
+            }
+            
+            await LinksStorage.save({
+                id: new Date().getTime().toString(),
+                name,
+                url,
+                category
+            })
 
-        console.log({ category, name, url })
+            Alert.alert("Sucesso", "Novo link adicionado", [
+                {text: "OK", onPress: () => router.back()}
+            ])
+
+
+            //const data = await LinksStorage.get()
+            //console.log(data)
+            //console.log({ category, name, url })
+            //console.log(new Date().getTime().toString())
+            
+        } catch (error) {
+            Alert.alert("Erro", "não foi possível salvar o link")
+            console.log(error)
+        }
     }
 
     return (
@@ -47,7 +70,7 @@ export default function Add() {
 
             <View style={styles.form}>
                 <Input placeholder="name" onChangeText={setName} autoCorrect={false} />
-                <Input placeholder="URL" onChangeText={setUrl} autoCorrect={false} />
+                <Input placeholder="URL" onChangeText={setUrl} autoCorrect={false}  />
                 <Button title="Adicionar" onPress={handleAdd} />
             </View>
 
